@@ -138,24 +138,24 @@ var server = {
             function (req, res, next) {
                 // TODO
                 next();
-            }, 
+            },
             function (req, res, proxy) {
 
                 _this.proxyMiddleware(req, res, proxy, _this.proxies[serverId], function (statusObj) {
                     console.log(statusObj.message);
                 });
-                
+
             /**
-             *  must listen hostname, otherwise it will be fail when repeat listening 
+             *  must listen hostname, otherwise it will be fail when repeat listening
              *  localhost in the some port
              */
             }).listen(from.port, from.hostname)
               .on('error', function (e) {
                 // catch server listen error
-                console.log('Create proxy error,'.red.grey + "cause by can't listen host from " + 
+                console.log('Create proxy error,'.red.grey + "cause by can't listen host from " +
                     from.hostname.yellow.grey + ' : ' + from.port.toString().blue.grey);
               });
-        
+
         console.log('Listen from ' + from.hostname.green.grey + ' : ' + from.port.toString().blue.grey);
 
         // Custom error
@@ -163,7 +163,7 @@ var server = {
             res.writeHead(500, {
                 'Content-Type': 'text/plain'
             });
-            res.end('Something went wrong. And we are reporting a custom error message.\n' + err); 
+            res.end('Something went wrong. And we are reporting a custom error message.\n' + err);
         });
 
         return this.serverId ++;
@@ -176,7 +176,7 @@ var server = {
         var from = this.parseHost(req.headers.host),
             method = req.method,
             // rewrite url to originUrl for proxy agent
-            requestURL = req.url = req.url || req.originalUrl,
+            requestURL = req.url = req.originalUrl,
             url = method.toUpperCase() + ':' + requestURL,
             forwardRouteObj = null;
 
@@ -194,7 +194,7 @@ var server = {
                 status: this.status.STATIC,
                 message: method.blue.grey + '  ' + requestURL + ' from '.green.grey +  from.hostname + ':' + from.port.toString().blue.grey
             });
-            
+
         } else if (forwardRouteObj = this.forwardMatched(url, proxyConfig.rules.forward)) {
             // set headers of config
             this.setHeaders(req, res, forwardRouteObj.options.headers);
@@ -222,8 +222,8 @@ var server = {
 
             next({
                 status: this.status.FORWARD,
-                message: 'forward '.yellow.grey + method.blue.grey + '  ' + requestURL + ' from '.green.grey +  from.hostname + ':' + 
-                    from.port.toString().blue.grey +' to '.green.grey + forwardObj.protocal + '://' + forwardObj.hostname + ':' + 
+                message: 'forward '.yellow.grey + method.blue.grey + '  ' + requestURL + ' from '.green.grey +  from.hostname + ':' +
+                    from.port.toString().blue.grey +' to '.green.grey + forwardObj.protocal + '://' + forwardObj.hostname + ':' +
                     forwardObj.port.toString().blue.grey + requestURL
             });
         }
@@ -313,7 +313,7 @@ var server = {
             }
         });
         // put default action on the first tuples
-        if (!isContainDefaultAction) routes.unshift('/'); 
+        if (!isContainDefaultAction) routes.unshift('/');
         return routes;
     },
     /**
@@ -323,7 +323,7 @@ var server = {
         return this.regexps.HOST.exec(host) ? true : false;
     },
     /**
-     *  
+     *
      *  @return Object
      */
     protocal: function (protocal) {
@@ -377,7 +377,7 @@ var server = {
 
         _.each(routes, function (route) {
 
-            // route detail config 
+            // route detail config
             if (_.isObject(route)) {
 
                 var routeOptions = route,
